@@ -1,22 +1,23 @@
 import User from "../models/user.js";
 import Note from "../models/note.js";
-import bcrypt from "bcrypt";
 import { defaultUser, defaultNotes } from "./data.js";
 
 export async function insertInitialData() {
   let user = await User.findOne({ username: defaultUser.username });
+  const existing = await User.findOne({ username: defaultUser.username });
 
-  // 👇 如果没有这个用户，就创建一个
-  if (!user) {
-    const hashedPassword = await bcrypt.hash(defaultUser.password, 10);
-    user = await User.create({
-      username: defaultUser.username,
-      password: hashedPassword,
-    });
+  if (existing) {
+    await Note.deleteMany({ userId: existing._id });
+    await User.deleteOne({ _id: existing._id });
+    console.log("🗑️  已删除旧用户及其笔记");
   }
 
-  // 👇 先删掉这个用户的旧笔记
-  await Note.deleteMany({ userId: user._id });
+  // 👇 创建一个新的用户
+  const { username, password } = defaultUser;
+  const newUser = new User({ username, password });
+  await newUser.save();
+  console.log("✅ 已插入初始用户数据");
+
   // 👇 再插入新的笔记
   const notesWithUser = defaultNotes.map((note) => ({
     ...note,
