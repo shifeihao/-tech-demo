@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1>记事本 Demo</h1>
-    <router-view /> <!-- 显示对应的页面组件 -->
+    <NavBar /><!-- 导航栏组件 -->
+    <router-view />
+    <!-- 显示对应的页面组件 -->
   </div>
 </template>
 
 <script setup>
-// 暂时不用写逻辑
+import NavBar from "./components/NavBar.vue";
 </script>
 
 <style>

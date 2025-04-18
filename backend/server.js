@@ -23,11 +23,9 @@ mongoose
   .catch((err) => console.error("Database connection error:", err));
 
 // 引入路由
-import authRoutes from "./routes/auth.js";
-import noteRoutes from "./routes/notes.js";
 
-app.use("/auth", authRoutes);
-app.use("/notes", noteRoutes);
+import routes from "./routes/routes.js";
+app.use("/", routes);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)

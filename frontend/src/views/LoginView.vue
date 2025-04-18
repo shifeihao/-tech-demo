@@ -7,22 +7,20 @@
   </div>
 </template>
 
-
-
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { login } from "../api/auth.js"; 
+import { login } from "../api/auth.js";
+import { useUserStore } from "../stores/user"; // 路径根据你项目结构来调整
 
 const username = ref("");
 const password = ref("");
 const error = ref("");
-
 const router = useRouter();
+const userStore = useUserStore(); // 创建 pinia 用户状态实例
 
 async function handleLogin() {
   error.value = "";
-
   if (!username.value || !password.value) {
     error.value = "用户名和密码不能为空";
     return;
@@ -30,8 +28,8 @@ async function handleLogin() {
 
   try {
     const data = await login(username.value, password.value);
-    localStorage.setItem("token", data.token); // 存储 token
-    router.push("/"); // 登录成功跳转到首页
+    userStore.login(data.token, username.value); // ✅ 设置 pinia 登录状态
+    router.push("/"); // 跳转到首页
   } catch (err) {
     error.value = err.response?.data?.message || "登录失败";
   }
