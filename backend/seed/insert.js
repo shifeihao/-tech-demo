@@ -18,6 +18,8 @@ export async function insertInitialData() {
   await newUser.save();
   console.log("✅ 已插入初始用户数据");
 
+  user = await User.findOne({ username: defaultUser.username });
+
   // 👇 再插入新的笔记
   const notesWithUser = defaultNotes.map((note) => ({
     ...note,
