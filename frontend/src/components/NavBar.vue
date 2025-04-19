@@ -1,44 +1,59 @@
-<template>
-  <nav class="navbar">
-    <h1>📝 记事本 Demo</h1>
-    <div class="nav-links">
-      <RouterLink to="/">首页</RouterLink>
-      <template v-if="userStore.isLoggedIn">
-        <span class="welcome">欢迎你，{{ userStore.username }}</span>
-        <button @click="logout">登出</button>
-      </template>
-      <template v-else>
-        <RouterLink to="/login">登录</RouterLink>
-        <RouterLink to="/register">注册</RouterLink>
-      </template>
-    </div>
-  </nav>
-</template>
-
 <script setup>
+import { computed } from "vue";
+import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
-import { useUserStore } from "../stores/user.js"; // 引入 Pinia store
 
 const userStore = useUserStore();
 const router = useRouter();
 
-// 登出函数
-function logout() {
+const isLoggedIn = computed(() => !!userStore.isLoggedIn);
+const username = computed(() => userStore.username || "");
+
+const logout = () => {
   userStore.logout();
   router.push("/login");
-}
+};
 </script>
 
-<style scoped>
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background-color: #f3f3f3;
-}
-.links {
-  display: flex;
-  gap: 16px; /* 每个子元素之间间距 */
-}
-</style>
+<template>
+  <header class="bg-gray-900">
+    <nav class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+      <!-- 左侧 Logo -->
+      <div class="flex items-center space-x-3">
+        <img src="/src/assets/vue.svg" class="h-5 w-5 brightness-200" />
+        <span class="text-white text-base font-medium tracking-wide"
+          >notebook</span
+        >
+      </div>
+
+      <!-- 右侧菜单 -->
+      <div class="flex items-center space-x-6 text-sm">
+        <template v-if="isLoggedIn">
+          <router-link
+            to="/note"
+            class="text-gray-300 hover:text-white transition"
+            >My Notes</router-link
+          >
+          <span class="text-gray-400"
+            >Hi, <span class="text-white">{{ username }}</span></span
+          >
+          <button
+            @click="logout"
+            class="bg-gray-700 hover:bg-blue-600 text-black px-4 py-1.5 rounded-md transition"
+          >
+            Logout
+          </button>
+        </template>
+
+        <template v-else>
+          <router-link to="/login" class="text-gray-400 hover:text-white"
+            >Login</router-link
+          >
+          <router-link to="/register" class="text-gray-400 hover:text-white"
+            >Register</router-link
+          >
+        </template>
+      </div>
+    </nav>
+  </header>
+</template>

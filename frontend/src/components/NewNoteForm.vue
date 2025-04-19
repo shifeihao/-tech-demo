@@ -1,54 +1,63 @@
-<!-- src/components/NewNoteForm.vue -->
 <template>
-  <div class="new-note">
-    <h3>📝 添加新笔记</h3>
-    <form @submit.prevent="submitNote">
-      <input v-model="title" type="text" placeholder="标题" required />
-      <br />
-      <textarea v-model="content" placeholder="内容" required></textarea>
-      <br />
-      <button type="submit">提交</button>
-    </form>
-    <p v-if="message">{{ message }}</p>
-  </div>
+  <form
+    @submit.prevent="submitNote"
+    class="bg-white rounded-lg shadow-md p-4 mb-6 space-y-4"
+  >
+    <input
+      v-model="title"
+      type="text"
+      placeholder="请输入标题"
+      class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <textarea
+      v-model="content"
+      placeholder="请输入内容..."
+      class="w-full px-4 py-2 border border-gray-300 rounded h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+    ></textarea>
+    <button
+      type="submit"
+      class="bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded transition"
+    >
+      Add a note!
+    </button>
+  </form>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { createNote } from "../api/notes"; // 你刚才写的封装方法
+import { createNote } from "../api/notes";
 import { useUserStore } from "../stores/user";
 
+const emit = defineEmits(["note-added"]);
+const userStore = useUserStore();
 const title = ref("");
 const content = ref("");
-const message = ref("");
-const userStore = useUserStore();
 
 async function submitNote() {
-  try {
-    if (!userStore.token) {
-      message.value = "❌ 请先登录！";
-      return;
-    }
-    await createNote(userStore.token, title.value, content.value);
+  if (!title.value.trim() || !content.value.trim()) {
+    alert("请输入标题和内容！");
+    return;
+  }
 
-    message.value = "✅ 笔记添加成功！";
+  try {
+    const response = await createNote(
+      userStore.token,
+      title.value,
+      content.value
+    );
+
+    emit("note-added", {
+      _id: response._id,
+      title: title.value,
+      content: content.value,
+      createdAt: new Date().toISOString(),
+    });
+
     title.value = "";
     content.value = "";
   } catch (err) {
-    message.value = "❌ 添加失败，请重试";
-    console.error(err);
+    console.error("新增失败", err);
+    alert("❌ 新增失败，请重试！");
   }
 }
 </script>
-
-<style scoped>
-textarea {
-  width: 100%;
-  height: 100px;
-  margin-top: 8px;
-}
-input,
-button {
-  margin-top: 8px;
-}
-</style>

@@ -1,27 +1,44 @@
 <template>
-  <div class="edit-note">
-    <h2>🛠️ 编辑笔记</h2>
+  <PageWrapper>
+    <h2 class="text-2xl font-semibold mb-6">✏️ 编辑笔记</h2>
+    <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
+      <input
+        v-model="title"
+        type="text"
+        placeholder="请输入标题"
+        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
 
-    <div v-if="loading">加载中...</div>
-    <div v-else>
-      <form @submit.prevent="updateNoteHandler">
-        <input v-model="title" type="text" placeholder="标题" required />
-        <br />
-        <textarea v-model="content" placeholder="内容" required></textarea>
-        <br />
-        <button type="submit">保存修改</button>
-      </form>
+      <textarea
+        v-model="content"
+        placeholder="请输入内容..."
+        class="w-full px-4 py-2 border border-gray-300 rounded h-96 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+      ></textarea>
 
-      <p v-if="message">{{ message }}</p>
+      <div class="flex justify-end space-x-3 pt-4">
+        <button
+          @click="goBack"
+          class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded transition"
+        >
+          取消
+        </button>
+        <button
+          @click="submitEdit"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition"
+        >
+          保存修改
+        </button>
+      </div>
     </div>
-  </div>
+  </PageWrapper>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getAllNotes, updateNote } from "../api/notes";
+import { getNoteById, updateNote } from "../api/notes";
 import { useUserStore } from "../stores/user";
+import PageWrapper from "../components/PageWrapper.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -29,46 +46,35 @@ const userStore = useUserStore();
 
 const title = ref("");
 const content = ref("");
-const loading = ref(true);
-const message = ref("");
 
 const noteId = route.params.id;
 
-onMounted(async () => {
+async function fetchNote() {
   try {
-    const token = userStore.token;
-    const notes = await getAllNotes(token); // 简单做法，从所有笔记中找目标
-    const note = notes.find((n) => n._id === noteId);
-
-    if (!note) {
-      message.value = "❌ 找不到这篇笔记";
-      return;
-    }
-
+    const note = await getNoteById(userStore.token, noteId);
     title.value = note.title;
     content.value = note.content;
   } catch (err) {
     console.error("加载笔记失败", err);
-    message.value = "❌ 加载失败，请重试";
-  } finally {
-    loading.value = false;
   }
-});
+}
 
-async function updateNoteHandler() {
+async function submitEdit() {
   try {
-    const token = userStore.token;
-    await updateNote(token, noteId, {
+    await updateNote(userStore.token, noteId, {
       title: title.value,
       content: content.value,
     });
-    message.value = "✅ 修改成功！正在跳转...";
-    setTimeout(() => {
-      router.push("/");
-    }, 1000);
+    router.push("/");
   } catch (err) {
     console.error("更新失败", err);
-    message.value = "❌ 修改失败，请重试";
+    alert("❌ 保存失败，请重试！");
   }
 }
+
+function goBack() {
+  router.back();
+}
+
+onMounted(fetchNote);
 </script>

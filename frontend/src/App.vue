@@ -1,18 +1,12 @@
 <template>
-  <div>
-    <NavBar /><!-- 导航栏组件 -->
-    <router-view />
-    <!-- 显示对应的页面组件 -->
+  <div class="min-h-screen bg-gray-100 text-gray-800">
+    <NavBar />
+    <main class="px-4 py-6 max-w-screen-xl mx-auto">
+      <router-view />
+    </main>
   </div>
 </template>
 
 <script setup>
 import NavBar from "./components/NavBar.vue";
 </script>
-
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 2rem;
-}
-</style>

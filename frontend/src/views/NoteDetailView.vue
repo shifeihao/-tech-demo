@@ -1,34 +1,84 @@
 <template>
-  <div>
-    <h2>📄 笔记详情</h2>
-    <p v-if="loading">加载中...</p>
-    <div v-else-if="note">
-      <h3>{{ note.title }}</h3>
-      <p>{{ note.content }}</p>
+  <div class="max-w-xl mx-auto px-4 py-10">
+    <!-- 卡片 -->
+    <div
+      class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden"
+    >
+      <!-- 顶部导航条 -->
+      <div class="flex items-center justify-between px-6 py-4 border-b">
+        <button
+          @click="goBack"
+          class="flex items-center text-gray-500 hover:text-gray-800 transition text-sm"
+        >
+          <svg
+            class="w-4 h-4 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          返回
+        </button>
+        <span class="text-sm text-gray-400">
+          {{ formatDate(note.createdAt) }}
+        </span>
+      </div>
+
+      <!-- 标题和内容 -->
+      <div class="px-6 py-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">
+          {{ note.title }}
+        </h1>
+        <p
+          class="text-gray-700 leading-relaxed whitespace-pre-line text-justify"
+        >
+          {{ note.content }}
+        </p>
+      </div>
     </div>
-    <p v-else>❌ 未找到笔记</p>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { useUserStore } from "../stores/user";
+import { useRoute, useRouter } from "vue-router";
 import { getNoteById } from "../api/notes";
+import { useUserStore } from "../stores/user";
 
 const route = useRoute();
-const note = ref(null);
-const loading = ref(true);
+const router = useRouter();
 const userStore = useUserStore();
+
+const note = ref({ title: "", content: "", createdAt: "" });
 
 onMounted(async () => {
   try {
-    const id = route.params.id;
-    note.value = await getNoteById(userStore.token, id);
+    const res = await getNoteById(userStore.token, route.params.id);
+    note.value = res;
   } catch (err) {
-    console.error("获取笔记详情失败", err);
-  } finally {
-    loading.value = false;
+    console.error("获取笔记失败", err);
+    alert("❌ 加载失败，请稍后再试");
   }
 });
+
+function goBack() {
+  router.back();
+}
+
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 </script>
