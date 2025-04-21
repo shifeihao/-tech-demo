@@ -1,24 +1,7 @@
-<script setup>
-import { computed } from "vue";
-import { useUserStore } from "../stores/user";
-import { useRouter } from "vue-router";
-
-const userStore = useUserStore();
-const router = useRouter();
-
-const isLoggedIn = computed(() => !!userStore.isLoggedIn);
-const username = computed(() => userStore.username || "");
-
-const logout = () => {
-  userStore.logout();
-  router.push("/login");
-};
-</script>
-
 <template>
   <header class="bg-gray-900">
     <nav class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-      <!-- 左侧 Logo -->
+      <!-- Left Logo -->
       <div class="flex items-center space-x-3">
         <img src="/src/assets/vue.svg" class="h-5 w-5 brightness-200" />
         <span class="text-white text-base font-medium tracking-wide"
@@ -26,7 +9,7 @@ const logout = () => {
         >
       </div>
 
-      <!-- 右侧菜单 -->
+      <!-- Right items -->
       <div class="flex items-center space-x-6 text-sm">
         <template v-if="isLoggedIn">
           <router-link
@@ -34,6 +17,13 @@ const logout = () => {
             class="text-gray-300 hover:text-white transition"
             >My Notes</router-link
           >
+
+          <router-link
+            to="/userset"
+            class="text-gray-300 hover:text-white transition"
+            >⚙️ Settings</router-link
+          >
+
           <span class="text-gray-400"
             >Hi, <span class="text-white">{{ username }}</span></span
           >
@@ -57,3 +47,20 @@ const logout = () => {
     </nav>
   </header>
 </template>
+
+<script setup>
+import { computed } from "vue";
+import { useUserStore } from "../stores/user";
+import { useRouter } from "vue-router";
+
+const userStore = useUserStore();
+const router = useRouter();
+
+const isLoggedIn = computed(() => !!userStore.isLoggedIn);
+const username = computed(() => userStore.username || "");
+
+const logout = () => {
+  userStore.logout();
+  router.push("/login");
+};
+</script>

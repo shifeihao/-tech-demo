@@ -1,6 +1,6 @@
 import Note from "../models/note.js";
 
-// 新建笔记
+// create notes by userId
 export const createNote = async (req, res) => {
   const { title, content } = req.body;
   try {
@@ -12,7 +12,7 @@ export const createNote = async (req, res) => {
   }
 };
 
-// 获取笔记列表
+// get notes by userId
 export const getNotes = async (req, res) => {
   try {
     const notes = await Note.find({ userId: req.user.id });
@@ -22,33 +22,32 @@ export const getNotes = async (req, res) => {
   }
 };
 
-// 通过id获取笔记列表
-// 获取单条笔记
+// get note by note_id
 export const getNoteById = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
-    // 检查是否存在
+    //check if note exists
     if (!note) {
-      return res.status(404).json({ error: "笔记不存在" });
+      return res.status(404).json({ error: "can not find this note" });
     }
-    // 检查权限（确保笔记属于当前用户）
+    // check if note belongs to user
     if (note.userId.toString() !== req.user.id) {
-      return res.status(403).json({ error: "无权访问该笔记" });
+      return res.status(403).json({ error: "No authority" });
     }
     res.status(200).json(note);
   } catch (err) {
-    res.status(500).json({ error: "获取笔记失败", details: err });
+    res.status(500).json({ error: "fail to get the note", details: err });
   }
 };
 
-// 更新笔记
+// update note by note_id
 export const updateNote = async (req, res) => {
   const { title, content } = req.body;
   const userId = req.user.id;
   const noteId = req.params.id;
 
   try {
-    // 确保笔记属于当前用户
+    // Check if the note exists and belongs to the user
     const note = await Note.findOneAndUpdate(
       { _id: noteId, userId },
       { title, content },
@@ -65,7 +64,7 @@ export const updateNote = async (req, res) => {
   }
 };
 
-// 删除笔记
+// delete note by note_id
 export const deleteNote = async (req, res) => {
   const userId = req.user.id;
   const noteId = req.params.id;

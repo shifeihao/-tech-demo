@@ -6,12 +6,12 @@
     <input
       v-model="title"
       type="text"
-      placeholder="请输入标题"
+      placeholder="please enter a title..."
       class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
     <textarea
       v-model="content"
-      placeholder="请输入内容..."
+      placeholder="please enter the content..."
       class="w-full px-4 py-2 border border-gray-300 rounded h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
     ></textarea>
     <button
@@ -35,7 +35,7 @@ const content = ref("");
 
 async function submitNote() {
   if (!title.value.trim() || !content.value.trim()) {
-    alert("请输入标题和内容！");
+    alert("please enter a title and content!");
     return;
   }
 
@@ -56,8 +56,8 @@ async function submitNote() {
     title.value = "";
     content.value = "";
   } catch (err) {
-    console.error("新增失败", err);
-    alert("❌ 新增失败，请重试！");
+    console.error("Failed to add the note", err);
+    alert("❌ Failed to add the note. Please try again.");
   }
 }
 </script>

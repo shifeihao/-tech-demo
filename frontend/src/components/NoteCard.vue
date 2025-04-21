@@ -18,7 +18,7 @@
       >
         Edit
       </button>
-      <!-- 改 emit 名称为 request-delete -->
+
       <button
         @click="$emit('request-delete', note._id)"
         class="text-sm px-3 py-1 bg-red-500 hover:bg-red-700 text-white rounded"
@@ -26,7 +26,7 @@
         Delete
       </button>
       <p class="text-sm text-gray-400 mt-1">
-        Time: {{ formatDate(note.createdAt) }}
+        Time: {{ formatDate(note.updatedAt) }}
       </p>
     </div>
   </div>

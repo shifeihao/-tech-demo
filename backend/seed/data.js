@@ -10,9 +10,9 @@ export const defaultNotes = [
       "Vue uses Proxy to implement responsive tracking, intercepting the reading and setting behavior of objects. Once the data changes, the binding to the DOM will be automatically updated. This method is more powerful and flexible than Object.defineProperty.In Vue 3, the responsive system is the core of the entire Composition API, which is particularly suitable for building maintainable large-scale front-end projects.🎉",
   },
   {
-    title: "Vue + Express 很强大！",
+    title: "Introduce to Vue.js",
     content:
-      "中间件是 Express 中最核心的设计之一。所有请求都会按顺序经过中间件处理，可以做日志、权限、解析 JSON 等操作。中间件函数签名为 (req, res, next)，如果你忘了调用 next()，请求就会卡住。掌握这一点，是写出可维护 API 的关键。",
+      "Vue.js is a progressive JavaScript framework designed for building dynamic user interfaces. It is praised for its simplicity and flexibility, making it suitable for projects ranging from small integrations to full-scale applications. The core idea of Vue is its reactive data binding and declarative rendering, which allow developers to focus on their application logic while Vue automatically handles the UI updates. One of Vue's standout features is its component-based architecture. Components encapsulate both the logic and presentation, promoting code reusability and modularity. By using Single File Components (.vue files), developers can combine HTML, CSS, and JavaScript in a single file, streamlining the development process and enhancing code organization. Vue also provides an ecosystem of tools, such as Vue Router for routing and Vuex for state management. These tools, combined with its efficient virtual DOM, make Vue.js an excellent choice for creating interactive and scalable applications. Its flexibility ensures seamless integration with other libraries and frameworks, offering developers the freedom to tailor solutions to their specific needs.",
   },
   {
     title: "Vue + Express is powerful!",

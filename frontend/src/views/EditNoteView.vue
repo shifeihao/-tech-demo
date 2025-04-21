@@ -1,18 +1,18 @@
 <template>
   <PageWrapper>
-    <h2 class="text-2xl font-semibold mb-6">✏️ 编辑笔记</h2>
+    <h2 class="text-2xl font-semibold mb-6">Edit the note</h2>
     <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
       <input
         v-model="title"
         type="text"
-        placeholder="请输入标题"
+        placeholder="Title"
         class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
       <textarea
         v-model="content"
-        placeholder="请输入内容..."
-        class="w-full px-4 py-2 border border-gray-300 rounded h-96 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Content..."
+        class="w-full px-4 py-2 border border-gray-300 rounded h-96 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-justify"
       ></textarea>
 
       <div class="flex justify-end space-x-3 pt-4">
@@ -20,13 +20,13 @@
           @click="goBack"
           class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded transition"
         >
-          取消
+          Canlcel
         </button>
         <button
           @click="submitEdit"
           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition"
         >
-          保存修改
+          Save Changes
         </button>
       </div>
     </div>
@@ -55,7 +55,7 @@ async function fetchNote() {
     title.value = note.title;
     content.value = note.content;
   } catch (err) {
-    console.error("加载笔记失败", err);
+    console.error("failed to load the note", err);
   }
 }
 
@@ -65,10 +65,10 @@ async function submitEdit() {
       title: title.value,
       content: content.value,
     });
-    router.push("/");
+    router.push("/note");
   } catch (err) {
-    console.error("更新失败", err);
-    alert("❌ 保存失败，请重试！");
+    console.error("failed to update", err);
+    alert("❌ failed to update the note, please try again later");
   }
 }
 

@@ -8,14 +8,14 @@
       <form @submit.prevent="handleRegister" class="space-y-4">
         <input
           v-model="username"
-          placeholder="用户名"
+          placeholder="Username"
           class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
           v-model="password"
           type="password"
-          placeholder="密码"
+          placeholder="password"
           class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
@@ -45,15 +45,20 @@ const router = useRouter();
 async function handleRegister() {
   error.value = "";
   if (!username.value || !password.value) {
-    error.value = "用户名和密码不能为空";
+    error.value = "empty username or password";
     return;
   }
 
   try {
     await register(username.value, password.value);
-    router.push("/login"); // 注册成功后跳转到登录页
+    alert("Registration successful!");
+    router.push("/login"); // Redirect to login page after successful registration
   } catch (err) {
-    error.value = err.response?.data?.message || "注册失败";
+    if (err.response?.status === 409) {
+      error.value = err.response.data?.error || "Username already exists";
+    } else {
+      error.value = err.response?.data?.error || "Failed to register";
+    }
   }
 }
 </script>

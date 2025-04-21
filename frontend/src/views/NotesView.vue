@@ -28,7 +28,7 @@ import { getAllNotes, deleteNote } from "../api/notes";
 import { useUserStore } from "../stores/user";
 import NewNoteForm from "../components/NewNoteForm.vue";
 import NoteCard from "../components/NoteCard.vue";
-import PageWrapper from "../components/PageWrapper.vue"; // ✅ 路径根据你项目结构调整
+import PageWrapper from "../components/PageWrapper.vue";
 
 const loading = ref(false);
 const notes = ref([]);
@@ -65,14 +65,14 @@ function selectNote(noteId) {
 }
 
 async function handleDelete(noteId) {
-  const ok = window.confirm("确定要删除这条笔记吗？");
+  const ok = window.confirm("Are you sure you want to delete this note?");
   if (!ok) return;
   try {
     await deleteNote(userStore.token, noteId);
     notes.value = notes.value.filter((note) => note._id !== noteId);
   } catch (err) {
-    console.error("删除失败", err);
-    alert("❌ 删除失败，请重试！");
+    console.error("failed to delete", err);
+    alert("❌ Failed to delete! Please try again later.");
   }
 }
 

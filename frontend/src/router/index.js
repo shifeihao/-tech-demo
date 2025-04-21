@@ -5,7 +5,7 @@ import RegisterView from "../views/RegisterView.vue";
 import NotesView from "../views/NotesView.vue";
 import EditNoteView from "../views/EditNoteView.vue";
 import NoteDetailView from "../views/NoteDetailView.vue";
-import TailwindTest from "../TailwindTest.vue";
+import UserSettingsView from "../views/UserSettingsView.vue";
 
 const routes = [
   { path: "/", component: LoginView },
@@ -13,8 +13,8 @@ const routes = [
   { path: "/register", component: RegisterView },
   { path: "/edit/:id", component: EditNoteView },
   { path: "/note/:id", component: NoteDetailView },
-  { path: "/test", component: TailwindTest },
   { path: "/note", component: NotesView },
+  { path: "/userset", component: UserSettingsView },
 ];
 
 const router = createRouter({

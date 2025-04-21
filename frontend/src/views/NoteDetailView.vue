@@ -1,10 +1,10 @@
 <template>
   <div class="max-w-xl mx-auto px-4 py-10">
-    <!-- 卡片 -->
+    <!-- Card -->
     <div
       class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden"
     >
-      <!-- 顶部导航条 -->
+      <!-- Top NaviBar -->
       <div class="flex items-center justify-between px-6 py-4 border-b">
         <button
           @click="goBack"
@@ -23,14 +23,14 @@
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          返回
+          Go Back
         </button>
         <span class="text-sm text-gray-400">
-          {{ formatDate(note.createdAt) }}
+          {{ formatDate(note.updatedAt) }}
         </span>
       </div>
 
-      <!-- 标题和内容 -->
+      <!-- Title and content -->
       <div class="px-6 py-8">
         <h1 class="text-2xl font-bold text-gray-800 mb-4">
           {{ note.title }}

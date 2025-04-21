@@ -1,8 +1,7 @@
-// frontend/src/api/notes.js
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-// 获取所有笔记
+// get all notes
 export async function getAllNotes(token) {
   const res = await axios.get(`${API_URL}/notes`, {
     headers: {
@@ -12,7 +11,7 @@ export async function getAllNotes(token) {
   return res.data;
 }
 
-// 创建新笔记
+// create a new note
 export async function createNote(token, title, content) {
   console.log("token", token);
   const res = await axios.post(
@@ -27,7 +26,7 @@ export async function createNote(token, title, content) {
   return res.data;
 }
 
-// 删除笔记
+// delete a note
 export async function deleteNote(token, noteId) {
   const res = await axios.delete(`${API_URL}/notes/${noteId}`, {
     headers: {
@@ -37,7 +36,7 @@ export async function deleteNote(token, noteId) {
   return res.data;
 }
 
-// 更新笔记
+// update a note
 export async function updateNote(token, noteId, updatedData) {
   const res = await axios.put(`${API_URL}/notes/${noteId}`, updatedData, {
     headers: {
@@ -47,7 +46,7 @@ export async function updateNote(token, noteId, updatedData) {
   return res.data;
 }
 
-// src/api/notes.js
+// get a note by id
 export async function getNoteById(token, id) {
   const res = await axios.get(`${API_URL}/notes/${id}`, {
     headers: {
