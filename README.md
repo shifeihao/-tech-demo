@@ -4,43 +4,87 @@ This project is a personal assignment for the Modern Web Development course. The
 
 ## Features
 
-- Register/ Login/ Logout
-- Create, view, edit, delete notes
+- Account: Register, login, logout ,update ,delete accounts
+- Note: Create, view, edit, delete notes
 - Page transition animations (using Vue `<transition>`)
 - Frontend and backend separated, communicating via RESTful API
 
-## 技术栈
+## Tech Stack
 
-- **前端**：Vue 3 + Vue Router + Axios + Tailwind CSS
-- **后端**：Express + MongoDB + Mongoose
-- **开发工具**：Vite + Node.js + GitHub Classroom
+- **Frontend**: Vue 3 + Vue Router + Axios + Tailwind CSS
+- **Backend**: Express + MongoDB + Mongoose
+- **Development Tools**: Vite + Node.js + GitHub Classroom
 
-## 项目结构
+## Project Structure
 
 ```
 cs732-assignment-shifeihao/
-├── frontend/       # Vue 前端项目
-├── backend/        # Express 后端服务
-├── README.md       # 项目说明文件
+├── backend/                          # Express backend service
+│   ├── controllers/                  # Controller logic
+│   │   ├── authController.js
+│   │   └── noteController.js
+│   ├── models/                       # Mongoose schemas
+│   │   ├── note.js
+│   │   └── user.js
+│   ├── routes/                       # API route definitions
+│   │   └── api/
+│   │       ├── api.js
+│   │       ├── auth.js               # Authority related router
+│   │       └── notes.js              # Note related router
+│   ├── .env                          # Environment variables (excluded in .gitignore)
+│   ├── package.json                  # Backend dependencies
+│   ├── server.js                     # App entry point
+│   └── README.md                     # (optional) backend docs
+├── frontend/                         # Vue 3 frontend project
+│   ├── public/                       # Static assets
+│   ├── index.html                    # App HTML entry
+│   ├── vite.config.js                # Vite config file
+│   ├── package.json                  # Frontend dependencies
+│   └── src/
+│       ├── api/                      # Axios API methods
+│       │   ├── auth.js
+│       │   └── notes.js
+│       ├── assets/                   # Icons, images
+│       │   └── vue.svg
+│       ├── components/               # Reusable UI components
+│       │   ├── NavBar.vue
+│       │   └── NoteCard.vue
+│       ├── router/                   # Vue Router config
+│       │   └── index.js
+│       ├── stores/                   # Pinia stores
+│       │   └── user.js
+│       ├── views/                    # Page views
+│       │   ├── EditNoteView.vue      # Edite page
+│       │   ├── LoginView.vue         # Login page
+│       │   ├── NoteDetailView.vue    # Note content in details
+│       │   ├── NotesView.vue         # My notes view page
+│       │   ├── RegisterView.vue      # Register page
+│       │   └── UserSettingsView.vue  # Profile edit page
+│       ├── App.vue                   # Root Vue component
+│       └── main.js                   # App entry point
+├── .gitignore                        # Git ignored files
+└── README.md                         # Main project documentation
+
+
 ```
 
 ---
 
-## 安装与运行说明
+## Installation & Running Instructions
 
-### 前提条件
+### Prerequisites
 
-- 安装 [Node.js](https://nodejs.org/) 和 [MongoDB](https://www.mongodb.com/)
-- 建议使用 VS Code 开发环境
+- Install [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/)
+- It is recommended to use VS Code as the development environment
 
-### 克隆仓库
+### Clone the Repository
 
 ```bash
 git clone https://github.com/UOA-CS732-S1-2025/cs732-assignment-shifeihao.git
 cd cs732-assignment-shifeihao
 ```
 
-### 启动后端
+### Start the backend
 
 ```bash
 cd backend
@@ -48,9 +92,9 @@ npm install
 npm run dev
 ```
 
-默认运行在 `http://localhost:5000`
+By default, the server runs at `http://localhost:5000`
 
-### 启动前端
+### Start the frontend
 
 ```bash
 cd frontend
@@ -58,52 +102,55 @@ npm install
 npm run dev
 ```
 
-默认运行在 `http://localhost:5173`
+By default, the server runs at `http://localhost:5173`
 
 ---
 
-## Vue 与 React 的对比分析（重点）
+## Comparison Between Vue and React
 
-本项目选用 Vue 主要是为了体验其与 React 的差异，以下是关键对比：
+This project uses Vue primarily to explore how it differs from React. Below is a key feature comparison:
 
-| 功能点       | Vue 特性                     | React 中的做法                        |
-| ------------ | ---------------------------- | ------------------------------------- |
-| 表单双向绑定 | ✅ `v-model`                 | ❌ 需要 `value` + `onChange`          |
-| 动画控制     | ✅ `<transition>` 直接使用   | ❌ 需要额外动画库（如 Framer Motion） |
-| 模板结构     | ✅ 使用 HTML 模板 + 指令     | ❌ JSX 混合逻辑和结构                 |
-| 响应式变量   | ✅ `ref()` / `reactive()`    | ❌ `useState` + hook 限制             |
-| 组件通信     | ✅ `props` + `emit`          | ✅ `props` + 回调函数                 |
-| 写法风格     | ✅ `<script setup>` 紧凑高效 | ❌ 函数组件结构相对繁琐               |
-
----
-
-## 如何测试
-
-1. 启动前后端后，自动生成测试用户，并插入一条默认笔记：
-   - 用户名：`testuser`
-   - 密码：`123456`
-2. 也可以自行在网页中注册账户，添加新笔记。
-3. 点击“查看”、“编辑”或“删除”按钮操作，实现对应功能。
-4. 查看笔记卡片的动态过渡动画。
+| Feature                 | Vue                                | React                                                |
+| ----------------------- | ---------------------------------- | ---------------------------------------------------- |
+| Two-way binding         | ✅ `v-model`                       | ❌ Requires `value` + `onChange`                     |
+| Animation handling      | ✅ Built-in `<transition>` support | ❌ Requires external libraries (e.g., Framer Motion) |
+| Template structure      | ✅ HTML templates + directives     | ❌ JSX mixes logic and markup                        |
+| Reactivity              | ✅ `ref()` / `reactive()`          | ❌ `useState` with hook limitations                  |
+| Component communication | ✅ `props` + `emit`                | ✅ `props` + callback functions                      |
+| Code style              | ✅ Compact `<script setup>` syntax | ❌ Function components are more verbose              |
 
 ---
 
-## 视频演示说明（另附上传至 Canvas）
+## How to Test
 
-本项目附带一个 15 分钟演示视频，包含以下内容：
-
-- Vue 技术介绍与上手体验
-- 项目功能运行演示
-- 代码结构与核心实现讲解
-- 与 React 的技术对比分析
+1. After starting both the frontend and backend, a test user will be automatically created along with a default note:
+   - Username: `testuser`
+   - Password: `123456`
+2. Alternatively, you can register a new account through the web interface and add your own notes.
+3. Use the "View", "Edit", or "Delete" buttons to interact with each note accordingly.
+4. Observe the smooth transition animations when notes are added or removed.
 
 ---
 
-## 安全说明
+## Video Demonstration (Also Submitted to Canvas)
 
-本项目未上传 `.env` 文件，已经提交到：Assignment - Private info / API key / etc submission，请查阅。它包括:
+A 15-minute demo video is included with this project, covering the following topics:
 
-### backend
+- Introduction to Vue and first-time developer experience
+- Live demonstration of core project features
+- Explanation of project structure and key implementation details
+- Technical comparison between Vue and React
+
+---
+
+## Security Notice
+
+The `.env` file is not included in this repository. It has been submitted via:  
+**Assignment - Private info / API key / etc submission** on Canvas.
+
+It contains the following environment variables:
+
+### Backend
 
 ```
 MONGO_URI
@@ -118,8 +165,11 @@ VITE_API_BASE_UR
 
 ---
 
-## 联系方式
+## Contact
 
-作者：SHI FEIHAO  
-邮箱：shifeihao@outlook.com  
-GitHub：[@shifeihao](https://github.com/UOA-CS732-S1-2025/cs732-assignment-shifeihao)
+Author: SHI FEIHAO  
+Email:
+
+- fshi538@aucklanduni.ac.nz
+- shifeihao@outlook.com
+- GitHub: [@shifeihao](https://github.com/UOA-CS732-S1-2025/cs732-assignment-shifeihao)
